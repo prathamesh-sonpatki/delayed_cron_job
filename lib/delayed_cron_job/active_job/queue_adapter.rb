@@ -19,7 +19,8 @@ module DelayedCronJob
 
       def enqueue_at_with_cron(job, timestamp)
         options = { queue: job.queue_name,
-                    cron: job.cron  }
+                    cron: job.cron,
+                    cron_class: job.class.name }
         options[:run_at] = Time.at(timestamp) if timestamp
         options[:priority] = job.priority if job.respond_to?(:priority)
         wrapper = ::ActiveJob::QueueAdapters::DelayedJobAdapter::JobWrapper.new(job.serialize)
